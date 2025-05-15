@@ -15,6 +15,9 @@ const server = http.createServer((req, res) => {
     case "/contact":
       filePath = path.join(__dirname, "contact.html");
       break;
+    case "/style.css":
+      filePath = path.join(__dirname, "style.css");
+      break;
     default:
       res.writeHead(404, { "Content-Type": "text/html" });
       res.end("<h1>404 Página no encontrada</h1>");
@@ -26,7 +29,14 @@ const server = http.createServer((req, res) => {
       res.writeHead(500);
       res.end("Error interno del servidor");
     } else {
-      res.writeHead(200, { "Content-Type": "text/html" });
+      let extname = path.extname(filePath);
+      let contentType = "text/html";
+
+      if (extname === ".css") {
+        contentType = "text/css";
+      }
+
+      res.writeHead(200, { "Content-Type": contentType });
       res.end(content);
     }
   });
